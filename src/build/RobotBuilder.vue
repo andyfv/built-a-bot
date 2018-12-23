@@ -36,13 +36,17 @@
 
 <script>
 export default {
-  name: "RobotBuilder"
+  name: "RobotBuilder",
+  data() {
+      return {}
+  }
 };
 </script>
 
 
-<style lang="sass">
-    .part {
+<style>
+
+.part {
   position: relative;
   width:165px;
   height:165px;
