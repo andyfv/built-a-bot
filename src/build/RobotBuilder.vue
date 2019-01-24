@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="content">
+    <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     <div class="top-row">
       <div class="top part">
         <div class="robot-name">
-          {{selectedRobot.head.title }}
+          {{selectedRobot.head.title}}
+          <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
         </div>
         <img :src="selectedRobot.head.src" title="head">
         <button @click="selectPreviousHead()" class="prev-selector">&#9668;</button>
@@ -34,6 +36,23 @@
         <button @click="selectNextBase()" class="next-selector">&#9658;</button>
       </div>
     </div>
+    <div>
+      <h1>Cart</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Robot</th>
+            <th class="cost">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(robot, index) in cart" :key="index">
+            <td>{{robot.head.title}}</td>
+            <td class="cost">{{robot.cost}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -55,6 +74,7 @@ export default {
   data() {
     return {
       availableParts,
+      cart: [],
       selectedHeadIndex: 0,
       selectedLeftArmIndex: 0,
       selectedTorsoIndex: 0,
@@ -74,6 +94,17 @@ export default {
     }
   },
   methods: {
+    addToCart() {
+      const robot = this.selectedRobot;
+      let cost = 0;
+
+      console.log("start")
+      for(let i = 0; i < Object.values(robot).length; i++) {
+        cost += Object.values(robot)[i].cost;
+      }
+
+      this.cart.push(Object.assign({}, robot, {cost}));
+    },
     selectNextHead() {
       this.selectedHeadIndex = getNextValidIndex(
         this.selectedHeadIndex,
@@ -235,6 +266,32 @@ export default {
   top: -25px;
   text-align: center;
   width: 100%;
+}
+
+.sale {
+  color: red;
+}
+
+.content {
+  position: relative;
+}
+
+.add-to-cart {
+  position: absolute;
+  right: 30px;
+  width: 220px;
+  padding: 3px;
+  font-size: 16px; 
+}
+
+td,th {
+  text-align: left;
+  padding: 5px;
+  padding-right: 20px;
+}
+
+.cost {
+  text-align: right;
 }
 
 </style>
