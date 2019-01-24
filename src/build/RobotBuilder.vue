@@ -2,6 +2,9 @@
   <div>
     <div class="top-row">
       <div class="top part">
+        <div class="robot-name">
+          {{selectedRobot.head.title }}
+        </div>
         <img :src="selectedRobot.head.src" title="head">
         <button @click="selectPreviousHead()" class="prev-selector">&#9668;</button>
         <button @click="selectNextHead()" class="next-selector">&#9658;</button>
@@ -64,8 +67,8 @@ export default {
       return {
         head: availableParts.heads[this.selectedHeadIndex],
         leftArm: availableParts.arms[this.selectedLeftArmIndex],
-        torso: availableParts.torsos[this.selectedTorsoIndex],
         rightArm: availableParts.arms[this.selectedRightArmIndex],
+        torso: availableParts.torsos[this.selectedTorsoIndex],
         base: availableParts.bases[this.selectedBaseIndex], 
       }
     }
@@ -225,6 +228,13 @@ export default {
 }
 .right .next-selector {
   right: -3px;
+}
+
+.robot-name {
+  position: absolute;
+  top: -25px;
+  text-align: center;
+  width: 100%;
 }
 
 </style>
