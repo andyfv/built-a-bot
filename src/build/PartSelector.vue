@@ -29,7 +29,7 @@ export default {
   props: {
     parts: {
       type: Array,
-      require: true
+      require: true,
     },
     position: {
       type: String,

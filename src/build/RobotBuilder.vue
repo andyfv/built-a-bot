@@ -74,25 +74,37 @@
 </template>
 
 <script>
-import availableParts from "../data/parts";
-import createdHookMixin from "./created-hook-mixin";
-import PartSelector from "./PartSelector.vue";
-import CollapsibleSection from '../shared/CollapsibleSection';
+import availableParts from '../data/parts';
+import createdHookMixin from './created-hook-mixin';
+import PartSelector from './PartSelector.vue';
+import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
-  name: "RobotBuilder",
+  name: 'RobotBuilder',
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) {
+      next(true);
+    } else {
+      /* eslint no-alert: 0 */
+      /* eslint no-restricted-globals: 0 */
+      const response = confirm(`You have not added your robot to the cart, 
+      are you sure you want to leave?`);
+      next(response);
+    }
+  },
   components: { PartSelector, CollapsibleSection },
   data() {
     return {
       availableParts,
+      addedToCart: false,
       cart: [],
       selectedRobot: {
         head: {},
         leftArm: {},
         rightArm: {},
         torso: {},
-        base: {}
-      }
+        base: {},
+      },
     };
   },
   mixins: [createdHookMixin],
@@ -100,27 +112,26 @@ export default {
     headBorderStyle() {
       return {
         border: this.selectedRobot.head.onSale
-          ? "3px solid red"
-          : "3px solid grey"
+          ? '3px solid red'
+          : '3px solid grey',
       };
     },
     saleBorderClass() {
-      return this.selectedRobot.head.onSale ? "sale-border" : "";
-    }
+      return this.selectedRobot.head.onSale ? 'sale-border' : '';
+    },
   },
   methods: {
     addToCart() {
       const robot = this.selectedRobot;
       let cost = 0;
-
-      console.log("start");
       for (let i = 0; i < Object.values(robot).length; i++) {
         cost += Object.values(robot)[i].cost;
       }
 
       this.cart.push(Object.assign({}, robot, { cost }));
-    }
-  }
+      this.addedToCart = true;
+    },
+  },
 };
 </script>
 
