@@ -1,6 +1,13 @@
 <template>
   <div class="part" :class="position">
-    <img :src="selectedPart.src" title="arm">
+    <router-link :to="{
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id,
+          partType: this.selectedPart.type,
+        }}">
+      <img :src="selectedPart.src" title="arm">
+    </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -27,10 +34,10 @@ export default {
     position: {
       type: String,
       required: true,
-      validator: function(value) {
-        return ["left", "right", "top", "bottom", "center"].includes(value);
-      }
-    }
+      validator: function (value) {
+        return ['left', 'right', 'top', 'bottom', 'center'].includes(value);
+      },
+    },
   },
   data() {
     return { selectedPartIndex: 0 };
@@ -38,31 +45,31 @@ export default {
   computed: {
     selectedPart() {
       return this.parts[this.selectedPartIndex];
-    }
+    },
   },
   created() {
-      this.emitSelectedPart();
+    this.emitSelectedPart();
   },
   updated() {
-      this.emitSelectedPart();
+    this.emitSelectedPart();
   },
   methods: {
     emitSelectedPart() {
-      this.$emit("partSelected", this.selectedPart);
+      this.$emit('partSelected', this.selectedPart);
     },
     selectNextPart() {
       this.selectedPartIndex = getNextValidIndex(
         this.selectedPartIndex,
-        this.parts.length
+        this.parts.length,
       );
     },
     selectPreviousPart() {
       this.selectedPartIndex = getPreviousValidIndex(
         this.selectedPartIndex,
-        this.parts.length
+        this.parts.length,
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -92,6 +99,7 @@ export default {
 }
 .part img {
   width: 165px;
+  cursor: pointer;
 }
 .top {
   border-bottom: none;
@@ -178,4 +186,4 @@ export default {
 .highlight {
   border: 1px solid red;
 }
-</style> 
+</style>
