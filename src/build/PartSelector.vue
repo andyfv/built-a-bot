@@ -10,7 +10,7 @@
     </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
-    <span v-pin class="sale" 
+    <span v-pin="{ bottom: '10px', right: '5px'}" class="sale" 
       v-show="selectedPart.onSale">Sale!</span>
   </div>
 </template>
